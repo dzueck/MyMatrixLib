@@ -1,5 +1,5 @@
 [package]
-name = "myVectorMath"
+name = "my_vector_math"
 version = "0.1.0"
 edition = "2018"
 
