@@ -4,6 +4,7 @@ use std::ops::Sub;
 use std::ops::Mul;
 use std::ops::Div;
 use std::ops::Index;
+use float_cmp::ApproxEq;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Vec2 {
@@ -100,6 +101,11 @@ impl From<VecN<2>> for Vec2 {
     }
 }
 
+impl PartialEq for Vec2 {
+    fn eq(&self, other: &Vec2) -> bool {
+       self.x.approx_eq(other.x, (0.00001, 4)) && self.y.approx_eq(other.y, (0.00001, 4))
+    }
+}
 
 
 
@@ -208,6 +214,11 @@ impl From<VecN<3>> for Vec3 {
     }
 }
 
+impl PartialEq for Vec3 {
+    fn eq(&self, other: &Vec3) -> bool {
+       self.x.approx_eq(other.x, (0.00001, 4)) && self.y.approx_eq(other.y, (0.00001, 4)) && self.z.approx_eq(other.z, (0.00001, 4))
+    }
+}
 
 
 
@@ -335,5 +346,15 @@ impl<const N: usize> From<Vec3> for VecN<N> {
     }
 }
 
+impl<const N: usize> PartialEq for VecN<N> {
+    fn eq(&self, other: &VecN<N>) -> bool {
+        for i in 0..N {
+            if !self[i].approx_eq(other[i], (0.00001, 4)) {
+                return false;
+            }
+        }
+        true
+    }
+}
 
 
