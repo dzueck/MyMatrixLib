@@ -396,6 +396,16 @@ impl<const N: usize> From<[f32; N]> for VecN<N> {
     }
 }
 
+impl<const N: usize> From<&Vec<f32>> for VecN<N> {
+    fn from(vals: &Vec<f32>) -> VecN<N> {
+        let mut new_vec = [0.0;N];
+        for i in 0..vals.len() {
+            new_vec[i] = vals[i];
+        }
+        VecN::from(new_vec)
+    }
+}
+
 impl<const N: usize> PartialEq for VecN<N> {
     fn eq(&self, other: &VecN<N>) -> bool {
         for i in 0..N {
@@ -419,4 +429,28 @@ impl<const N: usize> FromIterator<f32> for VecN<N> {
     }
 }
 
+struct VecNIter<const N: usize> {
+    vec: VecN<N>,
+    at: usize,
+}
 
+impl<const N: usize> Iterator for VecNIter<N> {
+    type Item = f32;
+    fn next(&mut self) -> Option<f32> {
+        if self.at < N {
+            return None
+        }
+
+        return Some(self.vec[self.at])
+    }
+}
+
+impl<const N: usize> IntoIterator for VecN<N> {
+    type Item = f32;
+    type IntoIter = VecNIter<N>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        VecNIter {vec: self, at: 0}
+    }
+
+}

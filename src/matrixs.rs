@@ -20,6 +20,7 @@ impl<const N: usize, const M: usize> Mat<N, M> {
         }
         new_mat
     }
+
 }
 
 impl<const N:usize> Mat<N, N> {
@@ -29,6 +30,33 @@ impl<const N:usize> Mat<N, N> {
             mat[i][i] = 0.0;
         }
         mat
+    }
+    
+    pub fn det(&self) -> f32 {
+        Self::determinent(self.into())  
+    }
+
+    fn determinent(vals: Vec<Vec<f32>>) -> f32 {
+        if vals.len() == 1 {
+            return vals[0][0];
+        }
+        
+        let mut answer = 0.0;
+
+        let top_vals = &vals[0];
+        let bottom_vals = &vals[1..vals.len()];
+
+        for z in 0..top_vals.len() { 
+            let mut new_det = Vec::<Vec<f32>>::new();
+            for i in 0..bottom_vals.len() {
+                for j in 0..vals.len() {
+                    new_det[i].extend_from_slice(&bottom_vals[i][0..j]);
+                    new_det[i].extend_from_slice(&bottom_vals[i][j..vals.len()]);
+                }
+            }
+            answer += top_vals[z] * Self::determinent(new_det) * ((z % 2) as f32 - 0.5) * 2.0;
+        }
+        answer
     }
 }
 
@@ -88,5 +116,32 @@ impl<const N: usize, const M: usize, const Z: usize> Mul<&Mat<M, Z>> for &Mat<N,
             }
         }
         new_mat
+    }
+}
+
+
+
+
+impl<const N: usize, const M: usize> From<&Vec<&Vec<f32>>> for Mat<N, M> {
+    fn from(vals: &Vec<&Vec<f32>>) -> Self {
+        let mut mat = Mat::new();
+
+        for i in 0..vals.len() {
+            mat[i] = vals[i].into();
+        }
+
+        mat
+    }
+}
+
+impl<const N: usize, const M: usize> From<&Mat<N, M>> for Vec<Vec<f32>> {
+    fn from(mat: &Mat<N, M>) -> Self {
+        let mut vals: Vec<Vec<f32>> = Vec::new();
+
+        for i in 0..N {
+            vals[i] = mat[i].into_iter().collect();
+        }
+
+        vals
     }
 }
