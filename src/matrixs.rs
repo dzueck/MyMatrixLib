@@ -2,7 +2,7 @@ use std::ops::{Add,Sub,Mul,Div,Index,IndexMut};
 use float_cmp::ApproxEq;
 use crate::vectors::VecN;
 
-struct Mat<const N: usize, const M: usize> {
+pub struct Mat<const N: usize, const M: usize> {
     vals: [VecN<M>; N],
 }
 
@@ -54,7 +54,7 @@ impl<const N:usize> Mat<N, N> {
                     new_det[i].extend_from_slice(&bottom_vals[i][j..vals.len()]);
                 }
             }
-            answer += top_vals[z] * Self::determinent(new_det) * ((z % 2) as f32 - 0.5) * 2.0;
+            answer += top_vals[z] * Self::determinent(new_det) * ((z % 2) as f32 - 0.5) * -2.0;
         }
         answer
     }
