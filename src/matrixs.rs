@@ -1,5 +1,4 @@
-use std::ops::{Add,Sub,Mul,Div,Index,IndexMut};
-use float_cmp::ApproxEq;
+use std::ops::{Mul,Index,IndexMut};
 use crate::vectors::VecN;
 
 pub struct Mat<const N: usize, const M: usize> {
@@ -112,7 +111,7 @@ impl<const N: usize, const M: usize, const Z: usize> Mul<&Mat<M, Z>> for &Mat<N,
         let other_t = other.transpose();
         for i in 0..M {
             for j in 0..M {
-                new_mat[i][j] = self[i].dot(&other_t[j]);
+                new_mat[i][j] = self[i] * &other_t[j];
             }
         }
         new_mat

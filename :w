@@ -15,12 +15,15 @@ impl<const N: usize> VecN<N> {
         VecN{vals: [0.0; N]}
     }
 
+    pub fn dot(&self, other: &VecN<N>) -> f32 {
+    }
+
     pub fn project(&self, other: &VecN<N>) -> VecN<N> {
-        (self * other / other * other) * other
+        (self.dot(other) / other.dot(other)) * other
     }
 
     pub fn length(&self) -> f32 {
-        f32::sqrt(self * self)
+        f32::sqrt(self.dot(self))
     }
     
     pub fn dimension(&self) -> usize {
@@ -98,7 +101,7 @@ impl<const N: usize> Sub<VecN<N>> for &VecN<N> {
 
 
 impl<const N: usize> Mul<&VecN<N>> for &VecN<N> {
-    type Output = f32;
+    type Output = VecN<N>;
 
     fn mul(self, vector: &VecN<N>) -> f32 {
         let mut answer = 0.0;
@@ -109,21 +112,21 @@ impl<const N: usize> Mul<&VecN<N>> for &VecN<N> {
     }
 }
 impl<const N: usize> Mul<VecN<N>> for &VecN<N> {
-    type Output = f32;
+    type Output = VecN<N>;
     fn mul(self, vector: VecN<N>) -> f32 {
-        self * &vector
+        vector * self
     }
 }
 impl<const N: usize> Mul<&VecN<N>> for VecN<N> {
-    type Output = f32;
+    type Output = VecN<N>;
     fn mul(self, vector: &VecN<N>) -> f32 {
-        self * vector
+        vector * self   
     }
 }
 impl<const N: usize> Mul<VecN<N>> for VecN<N> {
-    type Output = f32;
+    type Output = VecN<N>;
     fn mul(self, vector: VecN<N>) -> f32 {
-        self * &vector
+        vector * self
     }
 }
 
