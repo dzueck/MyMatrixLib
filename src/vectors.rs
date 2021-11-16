@@ -9,24 +9,6 @@ pub struct VecN<const N: usize> {
 }
 
 
-    /**pub fn cross(vectors: &[VecN<N>; N]) -> VecN<N> {
-        let mut answer: Vec<f32> = Vec::new();
-        let smaller_dim = VecN::<N>::dimension()-1;
-        for i in 0..N {
-            let mut mat = Mat::<N-1, N-1>::new();
-            for j in 0..N {
-                let vec = vectors[j];
-                let mut new_vec: Vec<f32> = Vec::with_capacity(smaller_dim);
-                new_vec.extend_from_slice(vec.slice(0..i));
-                new_vec.extend_from_slice(vec.slice((i+1)..(VecN::<N>::dimension() + 1)));
-                mat[j] = (&new_vec).into();
-                
-            }
-            
-        }
-        VecN::new()
-    }**/
-
 impl<const N: usize> VecN<N> {
     pub fn new() -> VecN<N> {
         VecN{vals: [0.0; N]}

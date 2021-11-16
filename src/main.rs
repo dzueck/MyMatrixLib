@@ -133,7 +133,7 @@ mod vector_tests {
         assert_eq!(x + y, VecN::from([x1 + y1, x2 + y2]));
         let x1 = 0.0;
         let x2 = 0.0;
-        let y1 = 1.0;
+        let y1 = 1.0;        
         let y2 = 2.34;
         let x = VecN::from([x1, x2]);
         let y = VecN::from([y1, y2]);
@@ -227,7 +227,7 @@ mod vector_tests {
         let x = VecN::from([x1, x2]);
         assert_ne!(x, VecN::from([x1 - y1, x2 - y2]));
     }
-
+    
 }
 
 #[cfg(test)]
