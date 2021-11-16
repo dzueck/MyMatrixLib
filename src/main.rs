@@ -27,20 +27,6 @@ mod vector_tests {
     }
 
     #[test]
-    fn vector_dimensions() {
-        let x = VecN::from([2.0,4.0,5.0,3.0,6.0,0.0,888.0]);
-        assert_eq!(x.dimension(), 7);
-        let x = VecN::from([2.0,4.0,5.0,0.0,888.0]);
-        assert_eq!(x.dimension(), 5);
-        let x = VecN::from([2.0,888.0]);
-        assert_eq!(x.dimension(), 2);
-        let x = VecN::from([2.0]);
-        assert_eq!(x.dimension(), 1);
-        let x = VecN::from([]);
-        assert_eq!(x.dimension(), 0);
-    }
-
-    #[test]
     fn vector_project() {
         let x = VecN::from([2.0,4.0,5.0]);
         let y = VecN::from([0.0,1.0,0.0]);
@@ -52,6 +38,11 @@ mod vector_tests {
 
     #[test]
     fn vector_cross() {
+        let x = VecN::from([2.0, 3.0]);
+        assert_eq!(x.cross(), VecN::from([3.0,-2.0]));
+        let x = VecN::from([2.0, 3.0, -5.0]);
+        let y = VecN::from([1.0, 0.0, 8.4]);
+        assert_eq!(x.cross(&y), VecN::from([25.2,-21.8,-3.0]));
     }
 
     #[test]

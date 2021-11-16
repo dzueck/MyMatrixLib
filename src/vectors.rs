@@ -62,10 +62,11 @@ impl VecN<2> {
 }
 
 impl VecN<3> {
-    pub fn cross(&self, other: VecN<3>) -> VecN<3> {
-        VecN::from([self[1] * other[2] - self[2] * other[1],
-                  self[0] * other[2] - self[2] * other[0],
-                  self[0] * other[1] - self[1] * other[0]])
+    pub fn cross(&self, other: &VecN<3>) -> VecN<3> {
+        let x = self[1] * other[2] - self[2] * other[1];
+        let y = -(self[0] * other[2] - self[2] * other[0]);
+        let z = self[0] * other[1] - self[1] * other[0];
+        VecN::from([x,y,z])
     }
 }
 
