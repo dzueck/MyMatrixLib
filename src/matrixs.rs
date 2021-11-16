@@ -89,10 +89,10 @@ impl<const N: usize, const M: usize> From<[VecN<M>; N]> for Mat<N, M> {
     }
 }
 
-impl<const N: usize, const M: usize> Mul<f32> for &Mat<N, M> {
+impl<const N: usize, const M: usize> Mul<&f32> for &Mat<N, M> {
     type Output = Mat<N, M>;
 
-    fn mul(self, scalar: f32) -> Mat<N, M> {
+    fn mul(self, scalar: &f32) -> Mat<N, M> {
         let mut new_mat = [[0.0; M]; N];
         for i in 0..N {
             for j in 0..M {
@@ -102,6 +102,16 @@ impl<const N: usize, const M: usize> Mul<f32> for &Mat<N, M> {
         Mat::from(new_mat)
     }
 }
+
+impl<const N: usize, const M: usize> Mul<f32> for &Mat<N, M> {
+    type Output = Mat<N, M>;
+
+    fn mul(self, scalar: f32) -> Mat<N, M> {
+        self * &scalar
+    }
+}
+
+
 
 impl<const N: usize, const M: usize, const Z: usize> Mul<&Mat<M, Z>> for &Mat<N, M> {
     type Output = Mat<N, M>;

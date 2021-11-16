@@ -51,6 +51,10 @@ mod vector_tests {
     }
 
     #[test]
+    fn vector_cross() {
+    }
+
+    #[test]
     fn vector_length() {
         let x = VecN::from([2.0,4.0,5.0]);
         let y = VecN::from([0.0,1.0,0.0]);

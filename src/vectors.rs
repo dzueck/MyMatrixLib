@@ -1,5 +1,5 @@
 
-use std::ops::{Add,Sub,Mul,Div,Index,IndexMut};
+use std::ops::{Add,Sub,Mul,Div,Index,IndexMut,Range};
 use float_cmp::ApproxEq;
 use std::iter::FromIterator;
 
@@ -9,6 +9,23 @@ pub struct VecN<const N: usize> {
 }
 
 
+    /**pub fn cross(vectors: &[VecN<N>; N]) -> VecN<N> {
+        let mut answer: Vec<f32> = Vec::new();
+        let smaller_dim = VecN::<N>::dimension()-1;
+        for i in 0..N {
+            let mut mat = Mat::<N-1, N-1>::new();
+            for j in 0..N {
+                let vec = vectors[j];
+                let mut new_vec: Vec<f32> = Vec::with_capacity(smaller_dim);
+                new_vec.extend_from_slice(vec.slice(0..i));
+                new_vec.extend_from_slice(vec.slice((i+1)..(VecN::<N>::dimension() + 1)));
+                mat[j] = (&new_vec).into();
+                
+            }
+            
+        }
+        VecN::new()
+    }**/
 
 impl<const N: usize> VecN<N> {
     pub fn new() -> VecN<N> {
@@ -27,12 +44,30 @@ impl<const N: usize> VecN<N> {
         self / self.length()
     }
     
-    pub fn dimension(&self) -> usize {
+    pub fn dimension() -> usize {
         N
+    }
+
+    pub fn slice(&self, slice: Range<usize>) -> &[f32]{
+        &self.vals[slice]
+    }
+
+}
+
+impl VecN<2> {
+    // I know this is not a real cross product but still gives perpindicular vector
+    pub fn cross(&self) -> VecN<2> {
+        VecN::from([self[1], -self[0]])
     }
 }
 
-
+impl VecN<3> {
+    pub fn cross(&self, other: VecN<3>) -> VecN<3> {
+        VecN::from([self[1] * other[2] - self[2] * other[1],
+                  self[0] * other[2] - self[2] * other[0],
+                  self[0] * other[1] - self[1] * other[0]])
+    }
+}
 
 impl<const N: usize> Add<&VecN<N>> for &VecN<N> {
     type Output = VecN<N>;
