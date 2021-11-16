@@ -16,11 +16,15 @@ impl<const N: usize> VecN<N> {
     }
 
     pub fn project(&self, other: &VecN<N>) -> VecN<N> {
-        (self * other / other * other) * other
+        (self * other / (other * other)) * other
     }
 
     pub fn length(&self) -> f32 {
         f32::sqrt(self * self)
+    }
+
+    pub fn normalize(&self) -> VecN<N> {
+        self / self.length()
     }
     
     pub fn dimension(&self) -> usize {
@@ -117,7 +121,7 @@ impl<const N: usize> Mul<VecN<N>> for &VecN<N> {
 impl<const N: usize> Mul<&VecN<N>> for VecN<N> {
     type Output = f32;
     fn mul(self, vector: &VecN<N>) -> f32 {
-        self * vector
+        &self * vector
     }
 }
 impl<const N: usize> Mul<VecN<N>> for VecN<N> {
