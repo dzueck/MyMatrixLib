@@ -337,11 +337,12 @@ pub struct VecNIter<const N: usize> {
 impl<const N: usize> Iterator for VecNIter<N> {
     type Item = f32;
     fn next(&mut self) -> Option<f32> {
-        if self.at < N {
+        if self.at >= N {
             return None
         }
-
-        return Some(self.vec[self.at])
+        let ret_val = Some(self.vec[self.at]);
+        self.at += 1;
+        ret_val
     }
 }
 

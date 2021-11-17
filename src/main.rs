@@ -24,6 +24,18 @@ mod vector_tests {
         assert_eq!(x[4], 444.0);
         assert_eq!(x[5], 0.0);
         assert_eq!(x[6], 888.0);
+        let x = VecN::<4>::new();
+        assert_eq!(x[0], 0.0);
+        assert_eq!(x[1], 0.0);
+        assert_eq!(x[2], 0.0);
+        assert_eq!(x[3], 0.0);
+    }
+
+    #[test]
+    #[should_panic]
+    fn vector_panics_out_of_bounds() {
+        let x = VecN::from([2.0,4.0,5.0,3.0,6.0,0.0,888.0]);
+        x[7];
     }
 
     #[test]
@@ -232,5 +244,194 @@ mod vector_tests {
 
 #[cfg(test)]
 mod matrix_tests {
-    
+    use my_matrix_lib::matrixs::Mat;
+    use my_matrix_lib::vectors::VecN;
+
+    #[test]
+    fn mat_contains_values() {
+        let mut x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0]]);
+        assert_eq!(x[0][0], 2.0);
+        assert_eq!(x[0][1], 5.0);
+        assert_eq!(x[1][0], -1.0);
+        assert_eq!(x[1][1], 0.0);
+        assert_eq!(x[0], VecN::from([2.0, 5.0]));
+        assert_eq!(x[1], VecN::from([-1.0, 0.0]));
+        x[0][1] = 100.0;
+        assert_eq!(x[0][0], 2.0);
+        assert_eq!(x[0][1], 100.0);
+        assert_eq!(x[1][0], -1.0);
+        assert_eq!(x[1][1], 0.0);
+        x[1] = VecN::from([50.22, 75.3]);
+        assert_eq!(x[0][0], 2.0);
+        assert_eq!(x[0][1], 100.0);
+        assert_eq!(x[1][0], 50.22);
+        assert_eq!(x[1][1], 75.3);
+
+        let mut x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0],
+                              [-30.3, 0.33]]);
+        assert_eq!(x[0][0], 2.0);
+        assert_eq!(x[0][1], 5.0);
+        assert_eq!(x[1][0], -1.0);
+        assert_eq!(x[1][1], 0.0);
+        assert_eq!(x[2][0], -30.3);
+        assert_eq!(x[2][1], 0.33);
+        assert_eq!(x[0], VecN::from([2.0, 5.0]));
+        assert_eq!(x[1], VecN::from([-1.0, 0.0]));
+        assert_eq!(x[2], VecN::from([-30.3, 0.33]));
+        x[1] = VecN::from([50.22, 75.3]);
+        assert_eq!(x[0][0], 2.0);
+        assert_eq!(x[0][1], 5.0);
+        assert_eq!(x[1][0], 50.22);
+        assert_eq!(x[1][1], 75.3);
+        assert_eq!(x[2][0], -30.3);
+        assert_eq!(x[2][1], 0.33);
+    }
+
+    #[test]
+    #[should_panic]
+    fn mat_panics_on_out_of_bounds() {
+        let mut x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0]]);
+        x[2][1] = 3.0;
+    }
+
+    #[test]
+    #[should_panic]
+    fn mat_panics_on_out_of_bounds_2() {
+        let mut x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0]]);
+        x[1][2] = 3.0;
+    }
+
+    #[test]
+    fn mat_scales() {
+        let mut x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0]]);
+        x = x * 3.0;
+        assert_eq!(x, Mat::from([[6.0, 15.0],
+                             [-3.0, 0.0]]));
+
+        let mut x = Mat::from([[2.0, 5.0, 4.2],
+                              [-1.0, 0.0, 2.5]]);
+        x = x * -1.0;
+        assert_eq!(x, Mat::from([[-2.0, -5.0, -4.2],
+                             [1.0, 0.0, -2.5]]));
+        let mut x = Mat::from([[3.0, 6.0],
+                              [-9.0, 0.0]]);
+        x = x / 3.0;
+        assert_eq!(x, Mat::from([[1.0, 2.0],
+                             [-3.0, 0.0]]));
+
+        let mut x = Mat::from([[2.0, 5.0, 4.2],
+                              [-1.0, 0.0, 2.5]]);
+        x = x / -1.0;
+        assert_eq!(x, Mat::from([[-2.0, -5.0, -4.2],
+                             [1.0, 0.0, -2.5]]));
+    }
+
+    #[test]
+    fn mat_det() {
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        assert_eq!(x.det(), 5.0);
+
+        let x = Mat::from([[2.0, 5.0],
+                            [-4.0, -10.0]]);
+        assert_eq!(x.det(), 0.0);
+
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, -10.0]]);
+        assert_eq!(x.det(), -15.0);
+
+        let x = Mat::from([[2.0, 5.0, 20.0],
+                            [-1.0, -10.0, 3.0],
+                            [3.0, -2.0, 1.0]]);
+        assert_eq!(x.det(), 682.0);
+        let x = Mat::from([[2.0, 5.0, 20.0, 80.0],
+                            [0.0, -10.0, 3.0, 3.0],
+                            [0.0, 0.0, 1.0, 0.0],
+                            [0.0, 0.0, 0.0, 4.0]]);
+        assert_eq!(x.det(), -80.0);
+    }
+
+    #[test]
+    fn mat_new_is_empty() {
+        let x = Mat::<2,2>::new();
+        assert_eq!(x, Mat::from([[0.0,0.0],
+                                [0.0,0.0]]));
+        let x = Mat::<4,4>::new();
+        assert_eq!(x, Mat::from([[0.0, 0.0, 0.0, 0.0],
+                                [0.0, 0.0, 0.0, 0.0],
+                                [0.0, 0.0, 0.0, 0.0],
+                                [0.0, 0.0, 0.0, 0.0]]));
+
+    }
+
+    #[test]
+    fn mat_transpose() {
+        let x = Mat::from([[2.0, 5.0],
+                              [-1.0, 0.0],
+                              [-30.3, 0.33]]);
+        assert_eq!(x.transpose(), Mat::from([[2.0, -1.0, -30.3],
+                                              [5.0, 0.0, 0.33]]));
+    }
+
+    #[test]
+    fn mat_identity() {
+        let x = Mat::<2,2>::identity();
+        assert_eq!(x, Mat::from([[1.0,0.0],
+                                [0.0,1.0]]));
+        let x = Mat::<4,4>::identity();
+        assert_eq!(x, Mat::from([[1.0, 0.0, 0.0, 0.0],
+                                [0.0, 1.0, 0.0, 0.0],
+                                [0.0, 0.0, 1.0, 0.0],
+                                [0.0, 0.0, 0.0, 1.0]]));
+
+    }
+
+    #[test]
+    fn mat_mult() {
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        let y = Mat::from([[-33.0, 2.0],
+                            [-1.0, 3.0]]);
+        assert_eq!(x * y, Mat::from([[-71.0, 19.0],
+                                    [33.0, -2.0]]));
+
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0],
+                            [-5.0, 8.0]]);
+        let y = Mat::from([[-33.0, 2.0],
+                            [-1.0, 3.0]]);
+        assert_eq!(x * y, Mat::from([[-71.0, 19.0],
+                                    [33.0, -2.0],
+                                    [157.0, 14.0]]));
+
+    }
+
+    #[test]
+    fn mat_eq() {
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        let y = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        assert_eq!(x, y);
+
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        let y = Mat::from([[2.0, 5.00000001],
+                            [-1.0, 0.0]]);
+        assert_eq!(x, y);
+
+        let x = Mat::from([[2.0, 5.001],
+                            [-1.0, 0.0]]);
+        let y = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        assert_ne!(x, y);
+    }
 }
+
+
+
