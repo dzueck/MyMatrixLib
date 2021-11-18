@@ -431,6 +431,20 @@ mod matrix_tests {
                             [-1.0, 0.0]]);
         assert_ne!(x, y);
     }
+
+    #[test]
+    fn mat_vec_mult() {
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0]]);
+        let y = VecN::from([-33.0, 2.0]);
+        assert_eq!(x * y, VecN::from([-56.0, 33.0]));
+
+        let x = Mat::from([[2.0, 5.0],
+                            [-1.0, 0.0],
+                            [-5.0, 8.0]]);
+        let y = VecN::from([-33.0, 2.0]);
+        assert_eq!(x * y, VecN::from([-56.0, 33.0, 181.0]));
+    }
 }
 
 

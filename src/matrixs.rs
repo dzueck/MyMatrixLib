@@ -204,6 +204,43 @@ impl<const N: usize, const M: usize, const Z: usize> Mul<Mat<M, Z>> for &Mat<N, 
 
 
 
+impl<const N: usize, const M: usize> Mul<&VecN<M>> for &Mat<N, M> {
+    type Output = VecN<N>;
+
+    fn mul(self, other: &VecN<M>) -> VecN<N> {
+        let mut new_vec = VecN::new();
+        for i in 0..N {
+            new_vec[i] = self[i] * other;
+        }
+        new_vec
+    }
+}
+
+impl<const N: usize, const M: usize> Mul<&VecN<M>> for Mat<N, M> {
+    type Output = VecN<N>;
+
+    fn mul(self, other: &VecN<M>) -> VecN<N> {
+        &self * other
+    }
+}
+
+impl<const N: usize, const M: usize> Mul<VecN<M>> for Mat<N, M> {
+    type Output = VecN<N>;
+
+    fn mul(self, other: VecN<M>) -> VecN<N> {
+        &self * &other
+    }
+}
+
+impl<const N: usize, const M: usize> Mul<VecN<M>> for &Mat<N, M> {
+    type Output = VecN<N>;
+
+    fn mul(self, other: VecN<M>) -> VecN<N> {
+        self * &other
+    }
+}
+
+
 impl<const N: usize, const M: usize> From<&Vec<&Vec<f32>>> for Mat<N, M> {
     fn from(vals: &Vec<&Vec<f32>>) -> Self {
         let mut mat = Mat::new();
