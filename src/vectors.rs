@@ -295,6 +295,18 @@ impl<const N: usize> From<[f32; N]> for VecN<N> {
     }
 }
 
+impl From<(f32, f32)> for VecN<2> {
+    fn from(vals: (f32, f32)) -> VecN<2> {
+        VecN{vals: [vals.0, vals.1]}
+    }
+}
+
+impl From<(f32, f32, f32)> for VecN<3> {
+    fn from(vals: (f32, f32, f32)) -> VecN<3> {
+        VecN{vals: [vals.0, vals.1, vals.2]}
+    }
+}
+
 impl<const N: usize> From<&Vec<f32>> for VecN<N> {
     fn from(vals: &Vec<f32>) -> VecN<N> {
         let mut new_vec = [0.0;N];
