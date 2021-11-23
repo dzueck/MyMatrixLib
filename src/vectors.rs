@@ -34,6 +34,10 @@ impl<const N: usize> VecN<N> {
         &self.vals[slice]
     }
 
+    pub fn dist(&self, other: &VecN<N>) -> f32{
+        (other - self).length()
+    }
+
 }
 
 impl VecN<2> {
