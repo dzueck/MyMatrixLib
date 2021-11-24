@@ -30,11 +30,11 @@ impl<const N: usize> VecN<N> {
         N
     }
 
-    pub fn slice(&self, slice: Range<usize>) -> &[f32]{
+    pub fn slice(&self, slice: Range<usize>) -> &[f32] {
         &self.vals[slice]
     }
 
-    pub fn dist(&self, other: &VecN<N>) -> f32{
+    pub fn dist(&self, other: &VecN<N>) -> f32 {
         (other - self).length()
     }
 
@@ -44,6 +44,10 @@ impl VecN<2> {
     // I know this is not a real cross product but still gives perpindicular vector
     pub fn cross(&self) -> VecN<2> {
         VecN::from([self[1], -self[0]])
+    }
+
+    pub fn angle(theta: f32) -> VecN<2> {
+        VecN::from([f32::cos(theta), f32::sin(theta)])
     }
 }
 

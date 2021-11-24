@@ -37,6 +37,15 @@ impl<const N:usize> Mat<N, N> {
 
 }
 
+impl Mat<2,2> {
+    pub fn rotation(theta: f32) -> Mat<2,2> {
+        let cos = f32::cos(theta);
+        let sin = f32::sin(theta);
+        Mat::from([[cos, -sin],
+                    [sin, cos]])
+    }
+}
+
 impl<const N: usize, const M: usize> Index<usize> for Mat<N, M> {
     type Output = VecN<M>;
 
