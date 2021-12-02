@@ -38,6 +38,10 @@ impl<const N: usize> VecN<N> {
         (other - self).length()
     }
 
+    pub fn vec_to(&self, other: &VecN<N>) -> VecN<N> {
+        self - other
+    }
+
 }
 
 impl VecN<2> {
