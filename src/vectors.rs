@@ -35,7 +35,7 @@ impl<const N: usize> VecN<N> {
     }
 
     pub fn dist(&self, other: &VecN<N>) -> f32 {
-        (other - self).length()
+        (self.vec_to(other)).length()
     }
 
     pub fn vec_to(&self, other: &VecN<N>) -> VecN<N> {
